@@ -4,6 +4,8 @@ from django.db import models
 from django.db import models
 from django.contrib.auth.models import User
 
+from accounts.models import CustomUser
+
 
 class Author(models.Model):
     first_name = models.CharField(max_length=100)
@@ -34,7 +36,7 @@ class Book(models.Model):
 
 class BookCheckout(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name='checkouts')
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='book_checkouts')
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='book_checkouts')
     checkout_date = models.DateField(auto_now_add=True)
     return_date = models.DateField(null=True, blank=True)
 

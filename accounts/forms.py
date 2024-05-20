@@ -1,21 +1,36 @@
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
-from .models import CustomUser  # Import CustomUser here
+
+from accounts.models import CustomUser
+from books.models import Book
 
 
-class RegistrationForm(UserCreationForm):
-    email = forms.EmailField(required=True)
-    full_name = forms.CharField(max_length=100, required=True)
-    personal_number = forms.CharField(max_length=20, required=True)
+class UserRegistrationForm(UserCreationForm):
+    name = forms.CharField(max_length=255, required=True)
+    surname = forms.CharField(max_length=255, required=True)
     birth_date = forms.DateField(required=True)
+    personal_number = forms.CharField(max_length=255, required=True)
 
     class Meta:
         model = CustomUser
-        fields = ('username', 'email', 'full_name', 'personal_number', 'birth_date', 'password1', 'password2')
+        fields = ['username', 'password1', 'password2', 'name', 'surname', 'birth_date', 'personal_number']
 
-    # ... (the rest of the RegistrationForm code)
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.first_name = self.cleaned_data['name']
+        user.last_name = self.cleaned_data['surname']
+        user.save()
+
+        return user
 
 
-class LoginForm(forms.Form):
-    username = forms.CharField(max_length=100)
-    password = forms.CharField(widget=forms.PasswordInput)
+class UserLoginForm(AuthenticationForm):
+    class Meta:
+        model = CustomUser
+        fields = ['username', 'password']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['username'].label = 'Username'
+        self.fields['password'].label = 'Password'
+
