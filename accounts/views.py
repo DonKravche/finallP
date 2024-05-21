@@ -22,17 +22,45 @@ import requests
 #     context = {'page_obj': page_obj}
 #     return render(request, 'home.html', context)
 
+# def home(request):
+#     # Make a request to your API endpoint
+#     response = requests.get('http://127.0.0.1:8000/books/api/books/')
+#     books = response.json()
+#
+#     # Paginate the books
+#     paginator = Paginator(books, 10)
+#     page_number = request.GET.get('page')
+#     page_obj = paginator.get_page(page_number)
+#
+#     context = {'page_obj': page_obj}
+#     return render(request, 'home.html', context)
+
+
+from books.models import Book, BookCheckout
+
 def home(request):
     # Make a request to your API endpoint
     response = requests.get('http://127.0.0.1:8000/books/api/books/')
     books = response.json()
+
+    book_statuses = {}
+    for book in books:
+        book_id = book['id']
+        checkouts = BookCheckout.objects.filter(book_id=book_id, return_date__isnull=True)
+        if checkouts.exists():
+            book_statuses[book_id] = 'reserved'
+        else:
+            book_statuses[book_id] = 'available'
 
     # Paginate the books
     paginator = Paginator(books, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
-    context = {'page_obj': page_obj}
+    context = {
+        'page_obj': page_obj,
+        'book_statuses': book_statuses,
+    }
     return render(request, 'home.html', context)
 
 

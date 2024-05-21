@@ -39,6 +39,7 @@ class BookCheckout(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='book_checkouts')
     checkout_date = models.DateField(auto_now_add=True)
     return_date = models.DateField(null=True, blank=True)
+    is_returned = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.user.username} - {self.book.title}"

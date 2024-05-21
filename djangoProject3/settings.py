@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
     'books',
     'accounts',
+    'library',
     'rest_framework'
 ]
 
