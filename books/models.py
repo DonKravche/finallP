@@ -33,12 +33,26 @@ class Book(models.Model):
     def __str__(self):
         return self.title
 
+    @property
+    def all_times_checked_out(self):
+        return self.checkouts.count()
+
+    @property
+    def available_copies(self):
+        # stock quantity - number of copies that are currently checked out
+        return self.stock_quantity - self.checkouts.filter(is_returned=False).count()
+
+    @property
+    def recently_checked_out_copies(self):
+        return self.checkouts.filter(is_returned=False).count()
+
 
 class BookCheckout(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name='checkouts')
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='book_checkouts')
-    checkout_date = models.DateField(auto_now_add=True)
-    return_date = models.DateField(null=True, blank=True)
+    checkout_date = models.DateTimeField(auto_now_add=True)
+    is_taken = models.BooleanField(default=False)
+    return_date = models.DateTimeField(null=True, blank=True)
     is_returned = models.BooleanField(default=False)
 
     def __str__(self):

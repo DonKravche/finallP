@@ -19,7 +19,12 @@ class GenreAdmin(admin.ModelAdmin):
     pass
 
 
-# admin.site.register(CustomUser)
+@admin.register(BookCheckout)
+class BookCheckoutAdmin(admin.ModelAdmin):
+    list_display = ('book', 'user', 'checkout_date', 'is_returned')
+    list_filter = ('is_returned',)
+    search_fields = ('book__title', 'user__username')
+
 
 class CustomUserAdmin(UserAdmin):
     list_display = ('username', 'email', 'first_name', 'last_name', 'is_staff', 'is_active', 'date_joined')
@@ -50,20 +55,16 @@ admin.site.register(CustomUser, CustomUserAdmin)
 @admin.register(Book)
 class BookAdmin(admin.ModelAdmin):
     list_display = (
-        'title', 'author', 'genre', 'publication_date', 'stock_quantity', 'times_checked_out', 'available_copies',
-        'checked_out_copies')
+        'id', 'title', 'author', 'genre', 'publication_date', 'stock_quantity', 'all_times_checked_out', 'available_copies',
+        'recently_checked_out_copies')
     list_filter = ('author', 'genre')
     search_fields = ('title', 'author__first_name', 'author__last_name')
 
-    def times_checked_out(self, obj):
-        return obj.checkouts.count()
+    def all_times_checked_out(self, obj):
+        return obj.all_times_checked_out
 
     def available_copies(self, obj):
-        return obj.stock_quantity - obj.checkouts.filter(return_date__isnull=True).count()
+        return obj.available_copies
 
-    def checked_out_copies(self, obj):
-        return obj.checkouts.filter(return_date__isnull=True).count()
-
-    times_checked_out.short_description = 'Times Checked Out'
-    available_copies.short_description = 'Available Copies'
-    checked_out_copies.short_description = 'Checked Out Copies'
+    def recently_checked_out_copies(self, obj):
+        return obj.recently_checked_out_copies
