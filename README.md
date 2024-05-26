@@ -59,7 +59,7 @@ Django REST Framework (for building the RESTful API)
 
 Installation and Setup
 
-Clone the repository: git clone https://github.com/your-repo/library-management.git
+Clone the repository: https://github.com/DonKravche/finallP.git
 Navigate to the project directory: cd library-management
 Create a virtual environment: python -m venv env
 Activate the virtual environment:
