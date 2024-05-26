@@ -14,6 +14,6 @@ class Command(BaseCommand):
         for checkout in unreturned_checkouts:
             # Checked if the checkout date is more than 1 day ago
             if checkout.checkout_date < timezone.now() - timezone.timedelta(hours=24):
-                checkout.delete()
+                checkout.is_late = True
                 self.stdout.write(
                     self.style.SUCCESS(f'Removed reservation for {checkout.book.title} by {checkout.user.username}'))

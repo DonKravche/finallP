@@ -30,17 +30,11 @@ class BookStatsView(APIView):
             late_count=Count(
                 'checkouts',
                 filter=Q(
-                    checkouts__is_returned=True,
-                    checkouts__return_date__gt=Subquery(
-                        BookCheckout.objects.filter(
-                            book=OuterRef('pk'),
-                            is_returned=True,
-                        ).values('checkout_date')[:1]
-                    )
+                    checkouts__is_late=True
                 )
             )
         ).order_by('-late_count')[:100]
-        late_books_data = BookSerializer(late_book_checkouts, many=True).data
+        late_books = BookSerializer(late_book_checkouts, many=True).data
 
         # 4. Top 100 users who most often returned books late
         late_user_checkouts = CustomUser.objects.annotate(
@@ -56,6 +50,8 @@ class BookStatsView(APIView):
                     )
                 )
             )
+
+
         ).order_by('-late_count')[:100]
         late_users_data = [
             {
@@ -69,7 +65,7 @@ class BookStatsView(APIView):
         stats = {
             'most_popular_books': most_popular_books_data,
             'book_checkouts_last_year': book_checkouts_last_year_data,
-            'late_books': late_books_data,
+            'late_books': late_books,
             'late_users': late_users_data,
         }
         return Response(stats)
