@@ -6,17 +6,17 @@ User Registration
 Users can register on the site by providing their email, password, full name, personal number, birth date, and other required information.
 Library staff can be added to the site through the admin panel.
 
-Authentication
+# Authentication
 
 Both library staff and registered users can log in to the site.
 
-Book Management
+# Book Management
 
 Library staff can add, delete, and update book information through the Django admin interface and via API (for external systems).
 The system includes at least 1000 randomly generated books.
 Each book has the following information:
 
-Title
+# Title
 Author (separate model with appropriate fields)
 Genre (separate model with appropriate fields)
 Publication date
@@ -40,7 +40,7 @@ The book list includes filtering, searching, and pagination functionality.
 Users can reserve an available book for one day. The reservation is automatically removed if the book is not checked out.
 Library staff can mark in the database when a user returns a book.
 
-Statistics
+# Statistics
 
 An API endpoint provides statistical data:
 
@@ -51,13 +51,13 @@ Top 100 users who most often returned books late
 
 
 
-Technologies Used
+# Technologies Used
 
 Django
 Django REST Framework (for building the RESTful API)
 (Optional) Template rendering library or Qt library for the user interface
 
-Installation and Setup
+# Installation and Setup
 
 Clone the repository: https://github.com/DonKravche/finallP.git
 Navigate to the project directory: cd library-management
@@ -73,13 +73,13 @@ Run database migrations: python manage.py migrate
 Create a superuser for the admin interface: python manage.py createsuperuser
 Start the development server: python manage.py runserver
 
-Usage
+# Usage
 
 Access the admin interface at http://localhost:8000/admin to manage books, authors, genres, and library staff.
 Access the API endpoints for user registration, authentication, book listing, reservation, and statistics.
 (Optional) Use the provided user interface to interact with the library management system.
 
-Contributing
+# Contributing
 Contributions are welcome! Please follow these steps:
 
 Fork the repository
