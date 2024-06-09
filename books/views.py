@@ -2,7 +2,7 @@ from rest_framework import viewsets, mixins, permissions
 from rest_framework.viewsets import GenericViewSet
 
 from .models import Book, Author, Genre, BookCheckout
-from .permission import IsStaffUser, IsAuthorOrStaff
+from books.permissions import IsStaffUser, IsAuthorOrStaff
 from .serializers import (BookSerializer, AuthorSerializer, GenreSerializer, BookCheckoutSerializer,
                           BookCheckoutCreateSerializer, BookCheckoutUpdateSerializer)
 from .filters import BookFilter
