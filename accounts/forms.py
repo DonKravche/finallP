@@ -19,7 +19,7 @@ class UserRegistrationForm(UserCreationForm):
         user = super().save(commit=False)
         user.first_name = self.cleaned_data['name']
         user.last_name = self.cleaned_data['surname']
-        user.save()
+        user.save(update_fields=['first_name', 'last_name'])
 
         return user
 

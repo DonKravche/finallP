@@ -1,7 +1,8 @@
-from rest_framework import viewsets, mixins
+from rest_framework import viewsets, mixins, permissions
 from rest_framework.viewsets import GenericViewSet
 
 from .models import Book, Author, Genre, BookCheckout
+from .permission import IsStaffUser, IsAuthorOrStaff
 from .serializers import (BookSerializer, AuthorSerializer, GenreSerializer, BookCheckoutSerializer,
                           BookCheckoutCreateSerializer, BookCheckoutUpdateSerializer)
 from .filters import BookFilter
@@ -16,6 +17,8 @@ class BookViewSet(viewsets.ModelViewSet):
     serializer_class = BookSerializer
     filter_backends = (DjangoFilterBackend,)
     filterset_class = BookFilter
+
+    permission_classes = [IsStaffUser]
 
 
 class BookCheckoutViewSet(mixins.CreateModelMixin,
@@ -37,6 +40,8 @@ class BookCheckoutViewSet(mixins.CreateModelMixin,
 class AuthorViewSet(viewsets.ModelViewSet):
     queryset = Author.objects.all()
     serializer_class = AuthorSerializer
+
+    permission_classes = [IsAuthorOrStaff]
 
 
 class GenreViewSet(viewsets.ModelViewSet):

@@ -75,7 +75,7 @@ def staff_check(user):
 
 @user_passes_test(staff_check, login_url='login')
 def admin_view(request):
-    # Your admin view code here
+    # admin view code
     return render(request, 'admin.html')
 
 
