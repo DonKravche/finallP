@@ -19,7 +19,7 @@ class UserRegistrationForm(UserCreationForm):
         user = super().save(commit=False)
         user.first_name = self.cleaned_data['name']
         user.last_name = self.cleaned_data['surname']
-        user.save()
+        user.save(update_fields=['first_name', 'last_name'])
 
         return user
 
@@ -33,4 +33,3 @@ class UserLoginForm(AuthenticationForm):
         super().__init__(*args, **kwargs)
         self.fields['username'].label = 'Username'
         self.fields['password'].label = 'Password'
-
